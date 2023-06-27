@@ -1,8 +1,10 @@
-# macromodes - Drivers and CLI Configuration Tools for a Raspberry Pi Pico MacroPad
+# macromodes
 
-[⌨️ Modes](#modes) &nbsp; [📏 Configuration Tool](#configuration-via-cli-tool) &nbsp; [🪛 Hardware Build Options](#hardware-build-options) 
+**Drivers and CLI Tools for configuring a Raspberry Pi Pico MacroPad**
+
+[⌨️ Modes](#modes) &nbsp; [📏 Configuration](#configuration-via-cli-tool) &nbsp; [🪛 Hardware Builds](#hardware-build-options) 
 &nbsp;
- [👷 Adding Custom Modes](#adding-modes) &nbsp; [💻 Pico Code Development](#loading-circuitpython-code-to-the-pico)&nbsp; [📜 License](#license)
+ [👷 Custom Modes](#adding-modes) &nbsp; [📜 License](#license)
 
 ---
 
