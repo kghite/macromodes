@@ -13,9 +13,11 @@ import rotaryio
 from adafruit_debouncer import Debouncer
 
 
-class TrackingIncrementalEncoder(rotaryio.IncrementalEncoder):
-
-    last_position: int = None
+class TrackingIncrementalEncoder():
+    # https://stackoverflow.com/questions/75387394/subclassing-weird-behavior-in-circuitpython
+     def __init__(self, gpio1, gpio2):
+        self.io = rotaryio.IncrementalEncoder(gpio1, gpio2)
+        self.last_position = 0
 
 
 switches: dict = {}
@@ -32,7 +34,6 @@ def create_switch(name: str, gpio):
     pin.direction = digitalio.Direction.INPUT
     pin.pull = digitalio.Pull.UP
     switch = Debouncer(pin)
-
     switches[name] = switch
 
 
@@ -41,8 +42,6 @@ def check_all_switches() -> list:
     Return a list of all switches that were "just pressed"
         as defined by the Adafruit Debouncer
     """
-
-
     # Compile all just pressed ids
     just_pressed = []
     for sid, switch in switches.items():
@@ -58,8 +57,6 @@ def create_encoder(name, gpio1, gpio2):
         Value - encoder object: TrackingIncrementalEncoder
     """
     encoder = TrackingIncrementalEncoder(gpio1, gpio2)
-    encoder.last_position = encoder.position
-
     encoders[name] = encoder
 
 
@@ -70,7 +67,8 @@ def check_all_encoders() -> list:
     """
     updated = []
     for eid, encoder in encoders.items():
-        position = encoder.position
+        position = encoder.io.position
+
         if position != encoder.last_position:
             update = 1 if position > encoder.last_position else -1
             encoder.last_position = position
