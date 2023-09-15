@@ -6,22 +6,27 @@ OLED: SSD1306
 Digital Buttons/Switches
 """
 
+
+import adafruit_displayio_ssd1306
 import board
+import busio
 import digitalio
+import displayio
 import rotaryio
 
 from adafruit_debouncer import Debouncer
 
 
-class TrackingIncrementalEncoder():
+class TrackingIncrementalEncoder:
     # https://stackoverflow.com/questions/75387394/subclassing-weird-behavior-in-circuitpython
-     def __init__(self, gpio1, gpio2):
+    def __init__(self, gpio1, gpio2):
         self.io = rotaryio.IncrementalEncoder(gpio1, gpio2)
         self.last_position = 0
 
 
 switches: dict = {}
 encoders: dict = {}
+screens: dict = {}
 
 
 def create_switch(name: str, gpio):
@@ -74,3 +79,14 @@ def check_all_encoders() -> list:
             encoder.last_position = position
             updated.append((eid, update))
     return updated
+
+
+def create_screen(name, scl, sda):
+    """
+    Creates a new oled screen and adds it to the screens dict as
+        Key - oled id (oid): string
+        Value - screen object: TODO
+    """
+    i2c = busio.I2C(scl=scl, sda=sda)
+    display_bus = displayio.I2CDisplay(i2c, device_address=0x3C)
+    display = adafruit_displayio_ssd1306.SSD1306(display_bus, width=128, height=64)

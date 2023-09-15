@@ -5,31 +5,29 @@ MacroModes
 import board
 import digitalio
 
+import config
 import hardware_utils as hw
 
 import rotaryio
 
-# Dynamic import for custom modes to keep in sync
-modules = ['test_responses', 'midi_responses']
+# Dynamic import to sync custom modes
 modes = []
-for mode in modules:
+for mode in config.modules:
     try:
         modes.append(__import__(mode))
     except ImportError:
-        print('Error importing custom module: ', mode)
-
-
-switches = []
+        print("Error importing custom module: ", mode)
 
 # TODO: Convert to config
 # Set up rotary encoder
-hw.create_encoder('main', board.GP15, board.GP14)
-hw.create_switch('encoder', board.GP13)
-hw.create_switch('K1', board.GP7)
+hw.create_encoder("Main", board.GP15, board.GP14)
+hw.create_switch("Encoder", board.GP13)
 
 # Set up keys
+hw.create_switch("K1", board.GP7)
 
 # Set up screen
+#hw.create_screen("OLED", board.GP17, board.GP16)
 
 while True:
     # TODO: Cycle mode on key press
